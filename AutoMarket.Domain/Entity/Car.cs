@@ -18,7 +18,7 @@ namespace AutoMarket.Domain.Entity
 
         public string Model { get; set; }
 
-        public double Speed { get; set; }
+        public int Speed { get; set; }
         public decimal Price { get; set; }
 
         public DateTime Created { get; set; }

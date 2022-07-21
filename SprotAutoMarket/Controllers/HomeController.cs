@@ -1,6 +1,8 @@
-﻿using AutoMarket.Domain.Entity;
+﻿using AutoMarket.DAL.Interfaces;
+using AutoMarket.Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
 using SprotAutoMarket.Models;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace SprotAutoMarket.Controllers
@@ -14,14 +16,10 @@ namespace SprotAutoMarket.Controllers
             _logger = logger;
         }
 
+
         public IActionResult Index()
         {
-            Car car = new Car()
-            {
-                Name = "Renault",
-                Speed = 180
-            };
-            return View(car);
+            return View(); 
         }
 
         public IActionResult Privacy()
