@@ -1,5 +1,6 @@
 ﻿using AutoMarket.DAL.Interfaces;
 using AutoMarket.Domain.Entity;
+using AutoMarket.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,41 +9,26 @@ namespace SprotAutoMarket.Controllers
     public class CarController : Controller
     {
 
-        private readonly ICarRepository _carRepository;
+        private readonly ICarService _carService;
 
-        public CarController(ICarRepository carRepository)
+        public CarController(ICarService carService)
         {
-            _carRepository = carRepository;
+            _carService = carService;
         }
+
+
 
         // GET: CarController
         [HttpGet]
-        public async Task<ActionResult> GetCars()
+        public async Task<IActionResult> GetCars()
         {
-            var response = await _carRepository.Select();
-            var response1 = await _carRepository.GetByName("BMW");
-            var response2 = await _carRepository.Get(2);
-
-            var car = new Car()
+            var response = await _carService.GetCars();
+            if (response.StatusCode == AutoMarket.Domain.Enum.StatusCode.OK)
             {
-                Name = "Audi",
-                Model = "Q5",
-                Speed = 250,
-                Price = 10000000,
-                Description = "Exclusive car",
-                Created = DateTime.Now
-
-            };
-
-            await _carRepository.Create(car);
-            await _carRepository.Delete(car);
-
-
-
-            return View(response);
-
+                return View(response.Data);
+            }
+            return RedirectToAction("Error");
         }
-
         // GET: CarController/Details/5
         public ActionResult Details(int id)
         {
