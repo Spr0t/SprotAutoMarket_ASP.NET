@@ -152,5 +152,40 @@ namespace AutoMarket.Service.Implementation
             }
             return baseresponse;
         }
+
+        public async Task<IBaseResponse<Car>> Edit(int id, CarViewModel model)
+        {
+            var baseresponse = new BaseResponse<Car>();
+            try
+            {
+                var car = await _carRepository.Get(id);
+                if (car == null)
+                {
+                    baseresponse.StatusCode = StatusCode.NotFound;
+                    baseresponse.Description = "Not found";
+                    return baseresponse;
+                }
+
+                car.Description = model.Description;
+                car.Created = model.Created;
+                car.Speed = model.Speed;
+                car.Model = model.Model;
+                car.Price = model.Price;
+                car.Name = model.Name;
+                //car.TypeCar = (TypeCar)Convert.ToInt32(model.TypeCar);
+               await _carRepository.Update(car);
+                return baseresponse;
+                 
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<Car>()
+                {
+                    Description = $"[Edit] : {ex.Message} ",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+            return baseresponse;
+        }
     }
 }  

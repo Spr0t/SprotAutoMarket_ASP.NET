@@ -1,6 +1,8 @@
 ﻿using AutoMarket.DAL.Interfaces;
 using AutoMarket.Domain.Entity;
+using AutoMarket.Domain.ViewModels.Car;
 using AutoMarket.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +31,62 @@ namespace SprotAutoMarket.Controllers
             }
             return RedirectToAction("Error");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCar(int id)
+        {
+            var response = await _carService.GetCar(id);
+            if (response.StatusCode == AutoMarket.Domain.Enum.StatusCode.OK)
+            {
+                return View(response.Data);
+            }
+            return RedirectToAction("Error");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = await _carService.DeleteCar(id);
+            if (response.StatusCode == AutoMarket.Domain.Enum.StatusCode.OK)
+            {
+                return RedirectToAction("GetCars");
+            } 
+            return RedirectToAction("Error");
+        }
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Save(int id)
+        {
+            if (id == 0)
+            {
+                return View();
+            }
+            var response = await _carService.GetCar(id);
+            if (response.StatusCode == AutoMarket.Domain.Enum.StatusCode.OK)
+            {
+                return View(response.Data);
+            }
+            return RedirectToAction("Error");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Save(CarViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Id == 0)
+                {
+                    await _carService.CreateCar(model);
+                }
+                else
+                {
+                    await _carService.Edit(model.Id, model);
+                }
+            }
+            return RedirectToAction("GetCars");
+        }
+
+
         // GET: CarController/Details/5
         public ActionResult Details(int id)
         {
@@ -78,10 +136,7 @@ namespace SprotAutoMarket.Controllers
         }
 
         // GET: CarController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+
 
         // POST: CarController/Delete/5
         [HttpPost]
