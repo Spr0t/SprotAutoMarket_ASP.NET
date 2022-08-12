@@ -17,8 +17,4 @@
     <ProjectReference Include="..\AutoMarket.Service\AutoMarket.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Новая папка\" />
-  </ItemGroup>
-
 </Project>
