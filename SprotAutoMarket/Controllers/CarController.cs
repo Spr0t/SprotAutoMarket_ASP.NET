@@ -22,9 +22,9 @@ namespace SprotAutoMarket.Controllers
 
         // GET: CarController
         [HttpGet]
-        public async Task<IActionResult> GetCars()
+        public IActionResult GetCars()
         {
-            var response = await _carService.GetCars();
+            var response =  _carService.GetCars();
             if (response.StatusCode == AutoMarket.Domain.Enum.StatusCode.OK)
             {
                 return View(response.Data);

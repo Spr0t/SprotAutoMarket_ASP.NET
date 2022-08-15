@@ -5,6 +5,7 @@ using AutoMarket.Domain.Enum;
 using AutoMarket.Domain.Response;
 using AutoMarket.Domain.ViewModels.Car;
 using AutoMarket.Service.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,57 +17,77 @@ namespace AutoMarket.Service.Implementation
     public class CarService : ICarService
     {
 
-        private readonly ICarRepository _carRepository;
+        private readonly IBaseRepository<Car> _carRepository;
 
-        public CarService(ICarRepository carRepository)
+        public CarService(IBaseRepository<Car> carRepository)
         {
-            _carRepository = carRepository;
+            _carRepository = carRepository; 
         }
 
-        public async Task<IBaseResponse<IEnumerable<Car>>> GetCars()
+        public IBaseResponse<List<Car>> GetCars()
         {
-            var baseResponse = new  BaseResponse<IEnumerable<Car>>();
             try
             {
-                var cars = await _carRepository.Select();
-                if (cars.Count == 0)
+                var cars = _carRepository.GetAll().ToList();
+                if (!cars.Any())
                 {
-                    baseResponse.Description = "Найдено 0 элементов";
-                    baseResponse.StatusCode = StatusCode.OK;
-                    return baseResponse;
+                    return new BaseResponse<List<Car>>()
+                    {
+                        Description = "Найдено 0 элементов",
+                        StatusCode = StatusCode.OK
+                    };
                 }
 
-                baseResponse.Data = cars;
-                baseResponse.StatusCode = StatusCode.OK;
-                return baseResponse;
+                return new BaseResponse<List<Car>>()
+                {
+                    Data = cars,
+                    StatusCode = StatusCode.OK
+                };
             }
             catch (Exception ex)
             {
-                return new BaseResponse<IEnumerable<Car>>()
+                return new BaseResponse<List<Car>>()
                 {
-                    Description = $"[GetCars] : {ex.Message}"
+                    Description = $"[GetCars] : {ex.Message}",
+                    StatusCode = StatusCode.InternalServerError
                 };
             }
         }
-        public async Task<IBaseResponse<Car>> GetCar(int id)
+        public async Task<IBaseResponse<CarViewModel>> GetCar(int id)
         {
             var baseresponse = new BaseResponse<Car>();
 
             try
             {
-                var car = await _carRepository.Get(id);
+                var car = await _carRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
                 if (car == null)
                 {
-                    baseresponse.Description = "Not found";
-                    baseresponse.StatusCode = StatusCode.NotFound;
-                    return baseresponse;
+                    return new BaseResponse<CarViewModel>()
+                    {
+                        Description = "Информация не найдена",
+                        StatusCode = StatusCode.NotFound
+                    };
                 }
-                baseresponse.Data = car;
-                return baseresponse;
+
+                var data = new CarViewModel()
+                {
+                    Created = car.Created,
+                    Description = car.Description,
+                    TypeCar = car.TypeCar.ToString(),
+                    Speed = car.Speed,
+                    Model = car.Model
+                };
+
+                return new BaseResponse<CarViewModel>()
+                {
+                    StatusCode = StatusCode.OK,
+                    Data = data
+                    
+                };
             }
             catch(Exception ex)
             {
-                return new BaseResponse<Car>()
+                return new BaseResponse<CarViewModel>()
                 {
                     Description = $"[GetCar] : {ex.Message} ",
                     StatusCode = StatusCode.InternalServerError
@@ -79,7 +100,7 @@ namespace AutoMarket.Service.Implementation
 
             try
             {
-                var car = await _carRepository.GetByName(name);
+                var car = await _carRepository.GetAll().FirstOrDefaultAsync(x => x.Name.Equals(name));
                 if (car == null)
                 {
                     baseresponse.Description = "Not found";
@@ -104,7 +125,7 @@ namespace AutoMarket.Service.Implementation
 
             try
             {
-                var car = await _carRepository.Get(id);
+                var car = await _carRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
                 if (car == null)
                 {
                     baseresponse.Description = "Not found";
@@ -158,7 +179,7 @@ namespace AutoMarket.Service.Implementation
             var baseresponse = new BaseResponse<Car>();
             try
             {
-                var car = await _carRepository.Get(id);
+                var car = await _carRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
                 if (car == null)
                 {
                     baseresponse.StatusCode = StatusCode.NotFound;
@@ -185,7 +206,6 @@ namespace AutoMarket.Service.Implementation
                     StatusCode = StatusCode.InternalServerError
                 };
             }
-            return baseresponse;
         }
     }
 }  
