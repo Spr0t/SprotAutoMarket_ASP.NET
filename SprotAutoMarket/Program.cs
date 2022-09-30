@@ -5,12 +5,14 @@ using AutoMarket.Domain.Entity;
 using AutoMarket.Service.Implementation;
 using AutoMarket.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using SprotAutoMarket;
 
 var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString(name: "DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(optionsAction: options => options.UseSqlServer(connection));
-builder.Services.AddScoped<IBaseRepository<Car>, CarRepository>();
-builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.InitializeRepositories();
+builder.Services.InitializeServices();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

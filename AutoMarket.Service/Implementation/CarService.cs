@@ -174,6 +174,36 @@ namespace AutoMarket.Service.Implementation
             return baseresponse;
         }
 
+        public async Task<IBaseResponse<CarViewModel>> CreateCar(CarViewModel carViewModel, byte[]? image)
+        {
+            var baseresponse = new BaseResponse<CarViewModel>();
+            try
+            {
+                var car = new Car()
+                {
+                    Description = carViewModel.Description,
+                    Created = carViewModel.Created,
+                    Speed = carViewModel.Speed,
+                    Model = carViewModel.Model,
+                    Price = carViewModel.Price,
+                    Name = carViewModel.Name,
+                    TypeCar = (TypeCar)Convert.ToInt32(carViewModel.TypeCar),
+                    //Avatar = image
+                };
+
+                await _carRepository.Create(car);
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<CarViewModel>()
+                {
+                    Description = $"[Delete] : {ex.Message} ",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+            return baseresponse;
+        }
+
         public async Task<IBaseResponse<Car>> Edit(int id, CarViewModel model)
         {
             var baseresponse = new BaseResponse<Car>();

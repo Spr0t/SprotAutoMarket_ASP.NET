@@ -20,6 +20,7 @@ namespace AutoMarket.Service.Interfaces
         Task<IBaseResponse<bool>> DeleteCar(int id);
 
         Task<IBaseResponse<CarViewModel>> CreateCar(CarViewModel carViewModel);
+        Task<IBaseResponse<CarViewModel>> CreateCar(CarViewModel carViewModel, byte[]? image);
         Task<IBaseResponse<Car>> Edit(int id, CarViewModel model);
     } 
 }

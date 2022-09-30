@@ -10,6 +10,7 @@ namespace AutoMarket.Domain.Enum
     {
         NotFound = 0,
         OK = 200,
-        InternalServerError = 500
+        InternalServerError = 500,
+        UserNotFound = 501
     }
 }

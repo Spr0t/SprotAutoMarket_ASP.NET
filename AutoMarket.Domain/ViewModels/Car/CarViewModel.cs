@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,5 +22,9 @@ namespace AutoMarket.Domain.ViewModels.Car
         public DateTime Created { get; set; }
 
         public string TypeCar { get; set; }
+
+        public IFormFile Avatar { get; set; }
+
+        public byte[]? Image { get; set; }
     }
 }
