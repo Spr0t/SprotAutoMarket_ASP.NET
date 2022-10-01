@@ -24,11 +24,24 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 @if(!User.Identity.IsAuthenticated)
-                {
+                {   
+@*                        <li class="dropdown">
+                            
+                            <button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Account
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Register">Register</a></li>
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Login">Login</a></li>
+                                
+                            </ul>
+                        </li>*@
+
+
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle paragraphLayout active text-black" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family:'Comic Sans MS'; font-weight: bold;">
-                            Аккаунт
-                        </a>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family:'Comic Sans MS'; font-weight: bold;">
+                            Account
+                        </button>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <div class="container">
                                 <div class="row">
@@ -36,12 +49,12 @@
                                         <ul class="nav flex-column paragraphHome">
                                             <li class="nav-item text-center">
                                                 <a class="nav-link active text-white" asp-controller="Account" asp-action="Register">
-                                                    Регистрация
+                                                    Registration
                                                 </a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link active text-white" asp-controller="Account" asp-action="Login">
-                                                    Вход
+                                                    Login
                                                 </a>
                                             </li>
                                         </ul>
@@ -54,9 +67,9 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle paragraphLayout active text-black" href="#" data-toggle="dropdown" style="font-family:'Comic Sans MS'; font-weight: bold;">
-                            Авто
-                        </a>
+                        <button class="btn btn-secondary dropdown-toggle paragraphLayout active text-black" data-bs-toggle="dropdown" style="font-family:'Comic Sans MS'; font-weight: bold;">
+                            Auto
+                        </button>
                         <div class="dropdown-menu">
                             <div class="container">
                                 <div class="row">
@@ -64,7 +77,7 @@
                                         <ul class="nav flex-column paragraphHome">
                                             <li class="nav-item text-center">
                                                 <a class="nav-link active text-white" asp-controller="Car" asp-action="List">
-                                                    Список
+                                                    List
                                                 </a>
                                             </li>
                                         </ul>
