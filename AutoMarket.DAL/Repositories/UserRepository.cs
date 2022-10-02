@@ -19,24 +19,24 @@ namespace AutoMarket.DAL.Repositories
 
         public IQueryable<User> GetAll()
         {
-            return _db.Users;
+            return _db.User;
         }
 
         public async Task Delete(User entity)
         {
-            _db.Users.Remove(entity);
+            _db.User.Remove(entity);
             await _db.SaveChangesAsync();
         }
 
         public async Task Create(User entity)
         {
-            await _db.Users.AddAsync(entity);
+            await _db.User.AddAsync(entity);
             await _db.SaveChangesAsync();
         }
 
         public async Task<User> Update(User entity)
         {
-            _db.Users.Update(entity);
+            _db.User.Update(entity);
             await _db.SaveChangesAsync();
 
             return entity;

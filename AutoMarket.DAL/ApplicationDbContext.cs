@@ -16,13 +16,18 @@ namespace AutoMarket.DAL
 
         public DbSet<Profile> Profiles { get; set; }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.LogTo(Console.WriteLine);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(builder =>
             {
-                builder.ToTable("Users").HasKey(x => x.Id);
+                builder.ToTable("User").HasKey(x => x.Id);
 
                 builder.HasData(new User
                 {

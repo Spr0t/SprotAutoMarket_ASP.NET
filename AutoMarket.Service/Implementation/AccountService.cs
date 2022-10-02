@@ -58,7 +58,7 @@ namespace AutoMarket.Service.Implementation
                 };
 
                 await _userRepository.Create(user);
-                await _proFileRepository.Create(profile);
+                //await _proFileRepository.Create(profile);
                 var result = Authenticate(user);
 
                 return new BaseResponse<ClaimsIdentity>()
