@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMarket.DAL.Interfaces;
+using AutoMarket.DAL.Repositories;
 using AutoMarket.Domain.Entity;
 using AutoMarket.Domain.Enum;
 using AutoMarket.Domain.Helpers;
@@ -36,6 +37,11 @@ namespace AutoMarket.Service.Implementation
         {
             try
             {
+                //using (var db = new Db())
+                //{
+                
+                //}
+
                 var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Name == model.Name);
                 if (user != null)
                 {

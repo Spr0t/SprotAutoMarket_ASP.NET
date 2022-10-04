@@ -67,7 +67,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item dropdown">
-                        <button class="btn btn-secondary dropdown-toggle paragraphLayout active text-black" data-bs-toggle="dropdown" style="font-family:'Comic Sans MS'; font-weight: bold;">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family:'Comic Sans MS'; font-weight: bold;">
                             Auto
                         </button>
                         <div class="dropdown-menu">
@@ -76,7 +76,7 @@
                                     <div class="col-md-12">
                                         <ul class="nav flex-column paragraphHome">
                                             <li class="nav-item text-center">
-                                                <a class="nav-link active text-white" asp-controller="Car" asp-action="List">
+                                                <a class="nav-link active text-white" asp-controller="Car" asp-action="GetCars">
                                                     List
                                                 </a>
                                             </li>
@@ -90,9 +90,9 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle paragraphLayout active text-black" href="#" data-toggle="dropdown" style="font-family:'Comic Sans MS'; font-weight: bold;">
-                            Админ
-                        </a>
+                     <button class="btn btn-secondary dropdown-toggle" type="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family:'Comic Sans MS'; font-weight: bold;">
+                            Account
+                        </button>
                         <div class="dropdown-menu">
                             <div class="container">
                                 <div class="row">
