@@ -25,7 +25,7 @@ namespace AutoMarket.Domain.Entity
 
         public TypeCar TypeCar { get; set; }
 
-        //public byte[]? Avatar { get; set; }
+        public byte[]? Avatar { get; set; }
     }
 
  

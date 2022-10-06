@@ -15,12 +15,11 @@ namespace AutoMarket.Service.Interfaces
 
         Task<IBaseResponse<CarViewModel>> GetCar(int id);
 
-        Task<IBaseResponse<Car>> GetCarByName(string name);
+        Task<BaseResponse<Dictionary<int, string>>> GetCar(string name);
 
         Task<IBaseResponse<bool>> DeleteCar(int id);
 
-        Task<IBaseResponse<CarViewModel>> CreateCar(CarViewModel carViewModel);
-        Task<IBaseResponse<CarViewModel>> CreateCar(CarViewModel carViewModel, byte[]? image);
+        Task<IBaseResponse<Car>> CreateCar(CarViewModel carViewModel, byte[]? image);
         Task<IBaseResponse<Car>> Edit(int id, CarViewModel model);
     } 
 }
