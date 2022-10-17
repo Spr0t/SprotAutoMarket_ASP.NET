@@ -1,6 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
 using AutoMarket.DAL.Interfaces;
-using AutoMarket.DAL.Repositories;
 using AutoMarket.Domain.Entity;
 using AutoMarket.Domain.Enum;
 using AutoMarket.Domain.Helpers;
@@ -9,15 +8,8 @@ using AutoMarket.Domain.ViewModels.Account;
 using AutoMarket.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Profile = AutoMarket.Domain.Entity.Profile;
 
-namespace AutoMarket.Service.Implementation
+namespace AutoMarket.Service.Implementations
 {
     public class AccountService : IAccountService
     {
@@ -37,11 +29,6 @@ namespace AutoMarket.Service.Implementation
         {
             try
             {
-                //using (var db = new Db())
-                //{
-                
-                //}
-
                 var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Name == model.Name);
                 if (user != null)
                 {
@@ -55,7 +42,7 @@ namespace AutoMarket.Service.Implementation
                 {
                     Name = model.Name,
                     Role = Role.User,
-                    Password = HashPasswordHelper.HashPassword(model.Password)
+                    Password = HashPasswordHelper.HashPassword(model.Password),
                 };
 
                 var profile = new Profile()
@@ -64,7 +51,7 @@ namespace AutoMarket.Service.Implementation
                 };
 
                 await _userRepository.Create(user);
-                //await _proFileRepository.Create(profile);
+                await _proFileRepository.Create(profile);
                 var result = Authenticate(user);
 
                 return new BaseResponse<ClaimsIdentity>()
