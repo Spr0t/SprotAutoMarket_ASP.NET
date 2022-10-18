@@ -1,10 +1,8 @@
-﻿using AutoMarket.DAL.Interfaces;
-using AutoMarket.Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using AutoMarket.DAL.Interfaces;
+using AutoMarket.DAL;
+using AutoMarket.Domain.Entity;
 
 namespace AutoMarket.DAL.Repositories
 {

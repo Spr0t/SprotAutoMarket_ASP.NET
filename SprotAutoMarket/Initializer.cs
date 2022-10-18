@@ -1,9 +1,10 @@
-﻿using AutoMarket.DAL.Interfaces;
+﻿using AutoMarket.Service.Implementation;
+using AutoMarket.DAL.Interfaces;
 using AutoMarket.DAL.Repositories;
 using AutoMarket.Domain.Entity;
-using AutoMarket.Service.Implementation;
-using AutoMarket.Service.Implementations;
 using AutoMarket.Service.Interfaces;
+using AutoMarket.Service.Implementations;
+using AutoMarket.DAL.Repositories;
 
 namespace SprotAutoMarket
 {

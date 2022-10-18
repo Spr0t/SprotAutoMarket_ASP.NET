@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMarket.Domain.Enum;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Automarket.Controllers
+namespace AutoMarket.Controllers
 {
     public class ProfileController : Controller
     {
@@ -35,6 +35,7 @@ namespace Automarket.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
+        
         public async Task<IActionResult> Detail()
         {
             var userName = User.Identity.Name;

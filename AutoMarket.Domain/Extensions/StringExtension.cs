@@ -1,6 +1,6 @@
-﻿using System.Text;
+﻿ using System.Text;
 
-namespace Automarket.Domain.Extensions
+namespace AutoMarket.Domain.Extensions
 {
     public static class StringExtension
     {

@@ -1,9 +1,9 @@
-﻿using Automarket.Domain.Extensions;
+﻿using AutoMarket.Domain.Extensions;
 using AutoMarket.Domain.ViewModels.User;
 using AutoMarket.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Automarket.Controllers
+namespace AutoMarket.Controllers
 {
     public class UserController : Controller
     {
