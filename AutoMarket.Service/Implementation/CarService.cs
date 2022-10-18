@@ -17,7 +17,6 @@ namespace AutoMarket.Service.Implementation
 {
     public class CarService : ICarService
     {
-
         private readonly IBaseRepository<Car> _carRepository;
 
         public CarService(IBaseRepository<Car> carRepository)
@@ -123,7 +122,7 @@ namespace AutoMarket.Service.Implementation
             }
         }
 
-        public async Task<IBaseResponse<Car>> CreateCar(CarViewModel model, byte[]? imageData)
+        public async Task<IBaseResponse<Car>> Create(CarViewModel model, byte[] imageData)
         {
             try
             {
@@ -199,7 +198,7 @@ namespace AutoMarket.Service.Implementation
                     return new BaseResponse<Car>()
                     {
                         Description = "Car not found",
-                        StatusCode = StatusCode.NotFound
+                        StatusCode = StatusCode.CarNotFound
                     };
                 }
 
@@ -207,7 +206,7 @@ namespace AutoMarket.Service.Implementation
                 car.Model = model.Model;
                 car.Price = model.Price;
                 car.Speed = model.Speed;
-                car.Created = DateTime.ParseExact(Convert.ToString(model.Created),"yyyyMMdd HH:mm",null);
+                car.Created = DateTime.ParseExact(Convert.ToString(model.Created), "yyyyMMdd HH:mm", null);
                 car.Name = model.Name;
 
                 await _carRepository.Update(car);

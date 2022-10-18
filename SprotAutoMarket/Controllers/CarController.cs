@@ -10,7 +10,6 @@ namespace SprotAutoMarket.Controllers
 {
     public class CarController : Controller
     {
-
         private readonly ICarService _carService;
 
         public CarController(ICarService carService)
@@ -18,29 +17,15 @@ namespace SprotAutoMarket.Controllers
             _carService = carService;
         }
 
-
-
-        // GET: CarController
         [HttpGet]
         public IActionResult GetCars()
         {
-            var response =  _carService.GetCars();
+            var response = _carService.GetCars();
             if (response.StatusCode == AutoMarket.Domain.Enum.StatusCode.OK)
             {
                 return View(response.Data);
             }
-            return RedirectToAction("Error");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetCar(int id)
-        {
-            var response = await _carService.GetCar(id);
-            if (response.StatusCode == AutoMarket.Domain.Enum.StatusCode.OK)
-            {
-                return View(response.Data);
-            }
-            return RedirectToAction("Error");
+            return View("Error", $"{response.Description}");
         }
 
         [Authorize(Roles = "Admin")]
@@ -50,29 +35,34 @@ namespace SprotAutoMarket.Controllers
             if (response.StatusCode == AutoMarket.Domain.Enum.StatusCode.OK)
             {
                 return RedirectToAction("GetCars");
-            } 
-            return RedirectToAction("Error");
+            }
+            return View("Error", $"{response.Description}");
         }
+
+        public IActionResult Compare() => PartialView();
+       
+
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Save(int id)
         {
             if (id == 0)
-            {
-                return View();
-            }
+                return PartialView();
+
             var response = await _carService.GetCar(id);
             if (response.StatusCode == AutoMarket.Domain.Enum.StatusCode.OK)
             {
-                return View(response.Data);
+                return PartialView(response.Data);
             }
-            return RedirectToAction("Error");
+            ModelState.AddModelError("", response.Description);
+            return PartialView();
         }
 
+        // string Name, string Model, double Speed, string Description, decimal Price, string TypeCar, IFormFile Avatar
         [HttpPost]
         public async Task<IActionResult> Save(CarViewModel model)
         {
-
+           
+            ModelState.Remove("Created");
             if (ModelState.IsValid)
             {
                 if (model.Id == 0)
@@ -82,81 +72,41 @@ namespace SprotAutoMarket.Controllers
                     {
                         imageData = binaryReader.ReadBytes((int)model.Avatar.Length);
                     }
-                        await _carService.CreateCar(model, imageData);
+                    await _carService.Create(model, imageData);
                 }
                 else
                 {
                     await _carService.Edit(model.Id, model);
                 }
+                return RedirectToAction("GetCars");
             }
-            return RedirectToAction("GetCars");
-        }
-
-
-        // GET: CarController/Details/5
-        public ActionResult Details(int id)
-        {
             return View();
         }
 
-        // GET: CarController/Create
-        public ActionResult Create()
+
+        [HttpGet]
+        public async Task<ActionResult> GetCar(int id, bool isJson)
         {
-            return View();
+            var response = await _carService.GetCar(id);
+            if (isJson)
+            {
+                return Json(response.Data);
+            }
+            return PartialView("GetCar", response.Data);
         }
 
-        // POST: CarController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> GetCar(string term, int page = 1, int pageSize = 5)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var response = await _carService.GetCar(term);
+            return Json(response.Data);
         }
 
-        // GET: CarController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: CarController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public JsonResult GetTypes()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CarController/Delete/5
-
-
-        // POST: CarController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var types = _carService.GetTypes();
+            return Json(types.Data);
         }
     }
 }
